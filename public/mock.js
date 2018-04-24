@@ -1,12 +1,4 @@
-# Validate.json
-Validador de estruturas json
-
-## Estrutura base
-Estrutura padrão utilizada para validação do json de entrada
-
-``` bash
-{
-    ...
+var base = {
     "carteirinha": {
         "type": "object",
         "required": false
@@ -25,15 +17,9 @@ Estrutura padrão utilizada para validação do json de entrada
             }
         }
     }
-    ...
 }
-```
 
-## Estrutura de entrada
-
-``` bash
-{
-    ...
+var validate = {
     "carteirinha": null,
     "contrato": [
         {
@@ -41,10 +27,4 @@ Estrutura padrão utilizada para validação do json de entrada
         "NOME": "10032214"
         }
     ]
-    ...
 }
-```
-
-A saida da validação acima será:
-
-![alt text](retorno_validate.png)
