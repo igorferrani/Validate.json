@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container" id="app">
+        <h1>Validate.json</h1>
+        <hr>
+        
+        <div v-if="tab == 1">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="" class="control-label">JSON Base</label>
+                        <textarea name="" v-model="struct.base" id="" cols="30" rows="20" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="" class="control-label">JSON de Entrada</label>
+                        <textarea name="" v-model="struct.validate" id="" cols="30" rows="20" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+            <button type="button" @click="validate()" class="btn btn-primary">Validar</button>
+        </div>
+
+        <div v-if="tab == 2">
+            <ul class="list-group" v-if="arrFieds.length > 0">
+                <li 
+                    class="list-group-item" 
+                    v-for="(item, key) in arrFieds" 
+                    v-if="item.visible" 
+                    v-bind:style="{ 
+                        marginLeft: (15 * item.level) + 'px', 
+                        marginBottom: (item.typeNode == 'array' ? 3 + 'px' : 0 + 'px') 
+                    }" 
+                    v-bind:class="{ 
+                        'list-group-item-success' : !item.typeError, 
+                        'list-group-item-danger' : item.typeError, 
+                        'click' : ['object', 'array'].indexOf(item.typeNode) >= 0 
+                    }">
+                    <div v-if="!item.typeError">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        "{{ item.field }}" <span v-if="item.message">- {{ item.message }}</span>
+                    </div>
+                    <div v-if="item.typeError">
+                        <span class="glyphicon glyphicon-remove"></span>
+                        "{{ item.field }}" <span v-if="item.message">- {{ item.message }}</span>
+                    </div>
+                </li>
+            </ul>
+            <h3 style="text-align:center;color:green" v-else>
+                Estrutura válida !
+            </h3>
+            <button type="button" @click="tab = 1" class="btn btn-primary">Voltar</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.js"></script>
+    <script src="Valid.js"></script>
+    <script src="Enum.js"></script>
+    <script src="mock.js"></script>
+    <script>
+    new Vue({
+        el: "#app",
+        data () {
+            return {
+                tab: 1,
+                Enum,
+                struct: {
+                    base: JSON.stringify(base),
+                    validate: JSON.stringify(validate)
+                },
+                arrFieds: []
+            }
+        },
+        methods: {
+            validate() {
+                const validate = new Valid(JSON.parse(this.struct.base), JSON.parse(this.struct.validate));
+
+                this.arrFieds = validate.go();
+                this.tab = 2;
+
+                debugger
+            },
+            toggleClick(key) {
+                var unique = false
+
+                for (var i = key; key < this.arrFieds.length - 1; i++) {
+                    if (this.arrFieds[i].level > this.arrFieds[key].level && !unique) {
+                        this.arrFieds[i].visible = !this.arrFieds[i].visible
+                        unique = true
+                    } else {
+                        continue
+                    }
+                }
+            }
+        }
+    });
+    </script>
+    <style>
+    .list-group-item {
+        padding: 3px 5px!important;
+    }
+    .click {
+        cursor:pointer
+    }
+    </style>
+</body>
+
+</html>
