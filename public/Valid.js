@@ -44,7 +44,7 @@ Valid.prototype.struct = function (objectBase, objectValidate, level, fieldOrigi
         }
 
         // Valida o tipo de dado da propriedade
-        else if (keysV.indexOf(keysB[i]) >= 0) {
+        else if (keysV.indexOf(keysB[i]) >= 0 && objectBase[keysB[i]].required) {
             switch (objectBase[keysB[i]].type) {
                 case "object":
                     if (typeof objectValidate[keysB[i]] !== objectBase[keysB[i]].type || Array.isArray(objectValidate[keysB[i]])) {
