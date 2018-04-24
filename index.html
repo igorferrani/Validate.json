@@ -34,8 +34,20 @@
         </div>
 
         <div v-if="tab == 2">
-            <ul class="list-group" v-if="arrMessage.length > 0">
-                <li class="list-group-item" v-for="item in arrMessage" v-if="item.visible" v-bind:style="{ marginLeft: (15 * item.level) + 'px' }" v-bind:class="{ 'list-group-item-success' : !item.typeError, 'list-group-item-danger' : item.typeError }">
+            <ul class="list-group" v-if="arrFieds.length > 0">
+                <li 
+                    class="list-group-item" 
+                    v-for="(item, key) in arrFieds" 
+                    v-if="item.visible" 
+                    v-bind:style="{ 
+                        marginLeft: (15 * item.level) + 'px', 
+                        marginBottom: (item.typeNode == 'array' ? 3 + 'px' : 0 + 'px') 
+                    }" 
+                    v-bind:class="{ 
+                        'list-group-item-success' : !item.typeError, 
+                        'list-group-item-danger' : item.typeError, 
+                        'click' : ['object', 'array'].indexOf(item.typeNode) >= 0 
+                    }">
                     <div v-if="!item.typeError">
                         <span class="glyphicon glyphicon-ok"></span>
                         "{{ item.field }}" <span v-if="item.message">- {{ item.message }}</span>
@@ -54,7 +66,7 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.js"></script>
-    <script src="app.js"></script>
+    <script src="Valid.js"></script>
     <script src="Enum.js"></script>
     <script src="mock.js"></script>
     <script>
@@ -68,17 +80,29 @@
                     base: JSON.stringify(base),
                     validate: JSON.stringify(validate)
                 },
-                arrMessage: []
+                arrFieds: []
             }
         },
         methods: {
             validate() {
                 const validate = new Valid(JSON.parse(this.struct.base), JSON.parse(this.struct.validate));
 
-                this.arrMessage = validate.go();
+                this.arrFieds = validate.go();
                 this.tab = 2;
 
                 debugger
+            },
+            toggleClick(key) {
+                var unique = false
+
+                for (var i = key; key < this.arrFieds.length - 1; i++) {
+                    if (this.arrFieds[i].level > this.arrFieds[key].level && !unique) {
+                        this.arrFieds[i].visible = !this.arrFieds[i].visible
+                        unique = true
+                    } else {
+                        continue
+                    }
+                }
             }
         }
     });
@@ -86,6 +110,9 @@
     <style>
     .list-group-item {
         padding: 3px 5px!important;
+    }
+    .click {
+        cursor:pointer
     }
     </style>
 </body>

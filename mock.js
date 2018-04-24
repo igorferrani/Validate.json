@@ -535,7 +535,153 @@ var base = {
     },
     "contrato": {
         "type": "array",
-        "required": true
+        "required": true,
+        "node": {
+            "CODIGO": {
+                "type": "number",
+                "required": true
+            },
+            "NOME": {
+                "type": "number",
+                "required": true
+            },
+            "acesso": {
+                "0": {
+                    "type": "number",
+                    "required": true
+                },
+                "1": {
+                    "type": "number",
+                    "required": true
+                },
+                "2": {
+                    "type": "number",
+                    "required": true
+                },
+                "3": {
+                    "type": "number",
+                    "required": true
+                },
+                "4": {
+                    "type": "number",
+                    "required": true
+                },
+                "5": {
+                    "type": "number",
+                    "required": true
+                },
+                "6": {
+                    "type": "number",
+                    "required": true
+                },
+                "7": {
+                    "type": "number",
+                    "required": true
+                },
+                "8": {
+                    "type": "number",
+                    "required": true
+                },
+                "9": {
+                    "type": "number",
+                    "required": true
+                },
+                "10": {
+                    "type": "number",
+                    "required": true
+                },
+                "11": {
+                    "type": "number",
+                    "required": true
+                },
+                "12": {
+                    "type": "number",
+                    "required": true
+                },
+                "13": {
+                    "type": "number",
+                    "required": true
+                },
+                "14": {
+                    "type": "number",
+                    "required": true
+                },
+                "15": {
+                    "type": "number",
+                    "required": true
+                },
+                "16": {
+                    "type": "number",
+                    "required": true
+                },
+                "17": {
+                    "type": "number",
+                    "required": true
+                },
+                "18": {
+                    "type": "number",
+                    "required": true
+                },
+                "20": {
+                    "type": "number",
+                    "required": true
+                },
+                "21": {
+                    "type": "number",
+                    "required": true
+                },
+                "29": {
+                    "type": "number",
+                    "required": true
+                },
+                "30": {
+                    "type": "number",
+                    "required": true
+                },
+                "31": {
+                    "type": "number",
+                    "required": true
+                },
+                "32": {
+                    "type": "number",
+                    "required": true
+                },
+                "33": {
+                    "type": "number",
+                    "required": true
+                },
+                "34": {
+                    "type": "number",
+                    "required": true
+                },
+                "38": {
+                    "type": "number",
+                    "required": true
+                },
+                "39": {
+                    "type": "number",
+                    "required": true
+                },
+                "42": {
+                    "type": "number",
+                    "required": true
+                },
+                "89": {
+                    "type": "number",
+                    "required": true
+                }
+            },
+            "carteirinha": {
+                "type": "array",
+                "required": true,
+                "node": {
+                    "NICKNAME": {
+                        "type": "string",
+                        "required": true
+                    }
+                }
+            }
+        }
     },
     "agente": {
         "type": "object",

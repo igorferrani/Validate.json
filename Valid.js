@@ -11,7 +11,6 @@ Valid.prototype.go = function () {
 }
 
 Valid.prototype.struct = function (objectBase, objectValidate, level, fieldOrigin) {
-    debugger
     var _self = this
     var keysB = Object.getOwnPropertyNames(objectBase)
     var keysV = Object.getOwnPropertyNames(objectValidate)
@@ -26,6 +25,7 @@ Valid.prototype.struct = function (objectBase, objectValidate, level, fieldOrigi
         obj.fieldOrigin = fieldOrigin
         obj.level = level
         obj.field = keysB[i]
+        obj.typeNode = objectBase[keysB[i]].type
         obj.message = "Propriedade válida !"
 
         // Propriedades usadas no Vue
@@ -95,7 +95,13 @@ Valid.prototype.struct = function (objectBase, objectValidate, level, fieldOrigi
             else if (objectBase[keysB[i]].type === "array") {
                 level++
                 fieldOrigin = keysB[i]
-                _self.struct(objectBase[keysB[i]].node, objectValidate[keysB[i]][0], level, fieldOrigin)
+                var fieldNode = objectValidate[keysB[i]]
+debugger
+                for (n in fieldNode) {
+                    var itemNode = fieldNode[n]
+                    _self.struct(objectBase[fieldOrigin].node, itemNode, level, fieldOrigin)
+                }
+
                 level--
             }
         }
