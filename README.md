@@ -1,7 +1,7 @@
 # Validate.json
 Validador de estruturas json
 
-> Site: <a href="https://validate-json.firebaseapp.com/" target="_blank">https://validate-json.firebaseapp.com/</a>
+Site: [https://validate-json.firebaseapp.com/](https://validate-json.firebaseapp.com/){:target="_blank"}
 
 ## Estrutura base
 Estrutura padrão utilizada para validação do json de entrada
