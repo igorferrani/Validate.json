@@ -47,4 +47,4 @@ Estrutura padrão utilizada para validação do json de entrada
 
 A saida da validação acima será:
 
-![alt text](retorno_validate.png)
+![alt text](public/retorno_validate.png)
