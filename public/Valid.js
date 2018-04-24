@@ -82,7 +82,7 @@ Valid.prototype.struct = function (objectBase, objectValidate, level, fieldOrigi
         _self.arrErrors.push(obj)
 
         // Verifica a existência da propriedade 'node' que indica que deve validar os niveis à dentro
-        if (objectBase[keysB[i]].hasOwnProperty('node')) {
+        if (objectBase[keysB[i]].hasOwnProperty('node') && !obj.typeError) {
             // Checa o tipo do nó [object/array]
             if (objectBase[keysB[i]].type === "object") {
                 level++
@@ -96,7 +96,7 @@ Valid.prototype.struct = function (objectBase, objectValidate, level, fieldOrigi
                 level++
                 fieldOrigin = keysB[i]
                 var fieldNode = objectValidate[keysB[i]]
-debugger
+
                 for (n in fieldNode) {
                     var itemNode = fieldNode[n]
                     _self.struct(objectBase[fieldOrigin].node, itemNode, level, fieldOrigin)
