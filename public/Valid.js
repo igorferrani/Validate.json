@@ -25,8 +25,10 @@ Valid.prototype.struct = function (objectBase, objectValidate, level, fieldOrigi
         obj.fieldOrigin = fieldOrigin
         obj.level = level
         obj.field = keysB[i]
-        obj.typeNode = objectBase[keysB[i]].type
         obj.message = "Propriedade válida !"
+
+        typeNodeBase = typeof objectBase[keysB[i]] === "object" && Array.isArray(objectBase[keysB[i]]) ? "array" : (typeof objectBase[keysB[i]] === "object" && !objectBase[keysB[i]] ? "null" : typeof objectBase[keysB[i]])
+        typeNodeCurrent = typeof objectValidate[keysB[i]] === "object" && Array.isArray(objectValidate[keysB[i]]) ? "array" : (typeof objectValidate[keysB[i]] === "object" && !objectValidate[keysB[i]] ? "null" : typeof objectValidate[keysB[i]])
 
         // Propriedades usadas no Vue
         obj.visible = true
@@ -35,71 +37,37 @@ Valid.prototype.struct = function (objectBase, objectValidate, level, fieldOrigi
         if (keysV.indexOf(keysB[i]) < 0) {
             obj.message = "É obrigatório a existência da propriedade [" + keysB[i] + "]"
             obj.typeError = Enum.Err.NotExists
-        } 
-        
-        // Verifica se é obrigatório o preenchimento do campo
-        else if (objectBase[keysB[i]].required && (objectValidate[keysB[i]] === undefined || objectValidate[keysB[i]] === null || objectValidate[keysB[i]] === "")) {
-            obj.message = "O valor da propriedade [" + keysB[i] + "] não pode ser [null, undefined ou vazio]"
-            obj.typeError = Enum.Err.IsRequired
         }
 
-        // Valida o tipo de dado da propriedade
-        else if (keysV.indexOf(keysB[i]) >= 0 && objectBase[keysB[i]].required) {
-            switch (objectBase[keysB[i]].type) {
-                case "object":
-                    if (typeof objectValidate[keysB[i]] !== objectBase[keysB[i]].type || Array.isArray(objectValidate[keysB[i]])) {
-                        obj.message = "O tipo do campo [" + keysB[i] + "] deve ser [" + objectBase[keysB[i]].type + "]"
-                        obj.typeError = Enum.Err.IsNotObject
-                    }
-                    break;
-                case "array":
-                    if (typeof objectValidate[keysB[i]] !== "object" && !Array.isArray(objectValidate[keysB[i]])) {
-                        obj.message = "O tipo do campo [" + keysB[i] + "] deve ser [" + objectBase[keysB[i]].type + "]"
-                        obj.typeError = Enum.Err.IsNotArray
-                    }
-                    break;
-                case "string":
-                    if (typeof objectValidate[keysB[i]] !== objectBase[keysB[i]].type) {
-                        obj.message = "O tipo do campo [" + keysB[i] + "] deve ser [" + objectBase[keysB[i]].type + "]"
-                        obj.typeError = Enum.Err.IsNotString
-                    }
-                    break;
-                case "boolean":
-                    if (typeof objectValidate[keysB[i]] !== objectBase[keysB[i]].type) {
-                        obj.message = "O tipo do campo [" + keysB[i] + "] deve ser [" + objectBase[keysB[i]].type + "]"
-                        obj.typeError = Enum.Err.IsNotBoolean
-                    }
-                    break;
-                case "number":
-                    if (typeof objectValidate[keysB[i]] !== objectBase[keysB[i]].type) {
-                        obj.message = "O tipo do campo [" + keysB[i] + "] deve ser [" + objectBase[keysB[i]].type + "]"
-                        obj.typeError = Enum.Err.IsNotNumber
-                    }
-                    break;
+        else if (keysV.indexOf(keysB[i]) >= 0) {
+            if (typeNodeCurrent !== typeNodeBase) {
+                obj.message = "O " + (typeNodeBase === "null" ? "valor" : "tipo") + " do campo [" + keysB[i] + "] deve ser [" + typeNodeBase + "]"
+                obj.typeError = Enum.Err.IsNotObject
             }
         }
 
         _self.arrErrors.push(obj)
 
         // Verifica a existência da propriedade 'node' que indica que deve validar os niveis à dentro
-        if (objectBase[keysB[i]].hasOwnProperty('node') && !obj.typeError) {
+        if (!obj.typeError) {
             // Checa o tipo do nó [object/array]
-            if (objectBase[keysB[i]].type === "object") {
+            if (typeNodeBase === "object" && objectBase[keysB[i]]) {
                 level++
                 fieldOrigin = keysB[i]
-                _self.struct(objectBase[keysB[i]].node, objectValidate[keysB[i]], level, fieldOrigin)
+                _self.struct(objectBase[keysB[i]], objectValidate[keysB[i]], level, fieldOrigin)
                 level--
             }
 
             // Array
-            else if (objectBase[keysB[i]].type === "array") {
+            else if (typeNodeBase === "array") {
                 level++
                 fieldOrigin = keysB[i]
                 var fieldNode = objectValidate[keysB[i]]
 
                 for (n in fieldNode) {
                     var itemNode = fieldNode[n]
-                    _self.struct(objectBase[fieldOrigin].node, itemNode, level, fieldOrigin)
+                    var itemValidate = objectBase[fieldOrigin][0] // Utiliza apenas o primeiro item do array para validação
+                    _self.struct(itemValidate, itemNode, level, fieldOrigin)
                 }
 
                 level--

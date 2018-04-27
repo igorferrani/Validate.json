@@ -1,22 +1,15 @@
 var base = {
     "carteirinha": {
-        "type": "object",
-        "required": false
+        "1": true,
+        "2": false,
+        "3": false
     },
-    "contrato": {
-        "type": "array",
-        "required": true,
-        "node": {
-            "CODIGO": {
-                "type": "number",
-                "required": true
-            },
-            "NOME": {
-                "type": "string",
-                "required": true
-            }
+    "contrato": [
+        {
+        "CODIGO": "10032214",
+        "NOME": "10032214"
         }
-    }
+    ]
 }
 
 var validate = {
