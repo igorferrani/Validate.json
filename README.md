@@ -4,29 +4,18 @@ Validador de estruturas json
 Site: [https://validate-json.firebaseapp.com/](https://validate-json.firebaseapp.com/)
 
 ## Estrutura base
-Estrutura padrão utilizada para validação do json de entrada
+A estrutura base para validação deve ser um mock em json
 
 ``` bash
 {
     ...
-    "carteirinha": {
-        "type": "object",
-        "required": false
-    },
-    "contrato": {
-        "type": "array",
-        "required": true,
-        "node": {
-            "CODIGO": {
-                "type": "number",
-                "required": true
-            },
-            "NOME": {
-                "type": "string",
-                "required": true
-            }
+    "carteirinha": null,
+    "contrato": [
+        {
+            "CODIGO": "10032214",
+            "NOME": "10032214"
         }
-    }
+    ]
     ...
 }
 ```
@@ -39,8 +28,8 @@ Estrutura padrão utilizada para validação do json de entrada
     "carteirinha": null,
     "contrato": [
         {
-        "CODIGO": "10032214",
-        "NOME": "10032214"
+            "CODIGO": "10032214",
+            "NOME": "10032214"
         }
     ]
     ...
